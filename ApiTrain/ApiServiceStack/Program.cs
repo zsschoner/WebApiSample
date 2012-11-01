@@ -20,8 +20,10 @@ namespace ApiServiceStack
 				DateTime.Now, ListeningOn);
 
 			var sb = new StringBuilder();
-			sb.AppendLine("Base Url of service descriptor:\n");			
-			sb.AppendLine(ListeningOn);			
+			sb.AppendLine("Base Url of service descriptor:\n");
+            sb.AppendLine("WCF: " + "http://localhost:84/ApiService.svc/");
+            sb.AppendLine("Mvc: " + "http://localhost:83/api/");
+            sb.AppendLine("ServicesStack: " + ListeningOn);			
 
 			System.Console.WriteLine(sb);			
 

@@ -14,6 +14,8 @@ namespace ApiMvc
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private const string ServiceStackListeningOn = "http://localhost:82/";
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -22,6 +24,19 @@ namespace ApiMvc
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Starting ServiceStack
+            StartServiceStack();
+        }
+
+        /// <summary>
+        /// Starts servicestack api
+        /// </summary>
+        private static void StartServiceStack()
+        {
+            var appHost = new ApiServiceStack.AppHost();
+            appHost.Init();
+            appHost.Start(ServiceStackListeningOn);
         }
     }
 }

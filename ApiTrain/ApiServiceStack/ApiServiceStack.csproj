@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -90,6 +91,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="App_Data\ASPNETDB.MDF.old" />
+    <None Include="App_Data\aspnetdb_log.ldf.old" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
