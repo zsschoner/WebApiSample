@@ -10,7 +10,7 @@ using ServiceStack.Common.Web;
 namespace ApiServiceStack.ServiceInterface
 {
     public class DefaultRestServiceImpl : RestServiceBase<ValuesDefault>
-    {
+    {        
         public override object OnGet(ValuesDefault request)
         {
             object result = null;
@@ -46,55 +46,6 @@ namespace ApiServiceStack.ServiceInterface
                 return "Default ValuesService";
             }
         }
+        
     }
-
-    //public class ValuesService : IService<Values>,
-    //                             IService<GetValue>,
-    //                             IService<PostValue>,
-    //                             IService<PutValue>,
-    //                             IService<DeleteValue>,
-    //                             IRequiresRequestContext
-    //{
-    //    private IQueryable<ValueModel> GetValues()
-    //    {
-    //        return ValuesOperations.ListValues().Select(vs => new ValueModel() { Id = vs.Id, Name = vs.Name }).AsQueryable();
-    //    }
-
-    //    // Get list
-    //    public object Execute(Values request)
-    //    {
-    //        return CommonServer.ValuesOperations.ListValues();
-    //    }
-
-    //    // Get Item
-    //    public object Execute(GetValue request)
-    //    {
-    //        return CommonServer.ValuesOperations.GetValue(request.Id);
-    //    }
-
-    //    // Create item
-    //    public object Execute(PostValue request)
-    //    {
-    //        return CommonServer.ValuesOperations.CreateValue(new ValueModel() { Id = request.Id, Name = request.Name });
-    //    }
-
-    //    // Update item
-    //    public object Execute(PutValue request)
-    //    {
-    //        return CommonServer.ValuesOperations.UpdateValue(request.Id, request);
-    //    }
-
-    //    // Delete item
-    //    public object Execute(DeleteValue request)
-    //    {
-    //        return CommonServer.ValuesOperations.DeleteValue(request);
-    //    }
-
-    //    // Request context if it is needed
-    //    public IRequestContext RequestContext { get; set; }
-
-
-
-
-    //}
 }

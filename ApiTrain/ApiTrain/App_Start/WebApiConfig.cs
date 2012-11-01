@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Net.Http.Formatting;
 
 namespace ApiMvc
 {
@@ -14,7 +15,15 @@ namespace ApiMvc
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );            
+            );
+
+            // Adds JSON MediaTypeFormatter for text/html request
+            var cfg = config.Formatters.OfType<JsonMediaTypeFormatter>().FirstOrDefault();
+            if (cfg != null)
+            {
+                cfg.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
+            }
+            
         }
     }
 }

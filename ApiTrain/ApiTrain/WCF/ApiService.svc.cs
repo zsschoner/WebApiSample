@@ -6,11 +6,12 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using CommonServer.Model;
+using System.ServiceModel.Activation;
 
 namespace ApiWCF
 {
-    [KnownType(typeof(ValueModel))]
-    [KnownType(typeof(IEnumerable<ValueModel>))]
+    [ServiceBehavior(IncludeExceptionDetailInFaults = true)]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class ApiService : IApiService
     {
         /// <summary>
@@ -20,7 +21,7 @@ namespace ApiWCF
         /// <remarks>TODO: Cannot display IQueryable</remarks>
         public IEnumerable<ValueModel> Values()
         {
-            return CommonServer.ValuesOperations.ListValues().Select(vs => new ValueModel() { Id = vs.Id, Name = vs.Name });
+            return CommonServer.ValuesOperations.ListValues().AsQueryable();
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace ApiWCF
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <remarks>Route parameter must be string in WCF</remarks>
+        /// <remarks>Route parameter must be string in WCF otherwise it won't be bound</remarks>
         public ValueModel Get(string id)
         {
             return CommonServer.ValuesOperations.GetValue(int.Parse(id));
@@ -46,14 +47,14 @@ namespace ApiWCF
         /// <param name="model"></param>
         /// <returns></returns>
         /// <remarks>Query string parameter can be int, long etc.</remarks>
-        public ValueModel Put(int id, ValueModel model)
+        public ValueModel Put(string id, ValueModel model)
         {
-            return CommonServer.ValuesOperations.UpdateValue(id, model);
+            return CommonServer.ValuesOperations.UpdateValue(int.Parse(id), model);
         }
 
-        public ValueModel Delete(ValueModel model)
+        public ValueModel Delete(string id)
         {
-            return CommonServer.ValuesOperations.DeleteValue(model);
+            return CommonServer.ValuesOperations.DeleteValue(new ValueModel() { Id = int.Parse(id) });
         }
     }
 }

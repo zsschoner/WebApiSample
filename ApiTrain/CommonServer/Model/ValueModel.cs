@@ -7,12 +7,10 @@ using ServiceStack.ServiceHost;
 
 namespace CommonServer.Model
 {
-    [DataContract]      
     public class ValueModel
-    {
-        [DataMember]        
+    {        
         public int Id { get; set; }
-        [DataMember]
+        
         public string Name { get; set; }
     }
 }

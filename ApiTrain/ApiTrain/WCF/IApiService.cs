@@ -13,30 +13,30 @@ namespace ApiWCF
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "values/")]
         IEnumerable<ValueModel> Values();
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "values/{id}")]
         ValueModel Get(string id);        
         [OperationContract]
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "values/")]
         ValueModel Post(ValueModel model);
         [WebInvoke(Method = "PUT",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "values?id={id}")]
-        ValueModel Put(int id, ValueModel model);
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "values/{id}")]
+        ValueModel Put(string id, ValueModel model);
         [WebInvoke(Method = "DELETE",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
-            UriTemplate = "values/")]
-        ValueModel Delete(ValueModel model);
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "values/{id}")]
+        ValueModel Delete(string id);
     }
 }
