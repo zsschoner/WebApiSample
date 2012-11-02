@@ -6,50 +6,50 @@ using ServiceContracts;
 
 namespace Data
 {
-    public class ValueRepository : ICrudRepository<ValueSet>
+    public class UsersRepository : ICrudRepository<Users>
     {
         private static readonly Data.DataContainer container = new DataContainer();
 
-        public ValueRepository()
+        public UsersRepository()
         {
             
         }
 
-        public IQueryable<ValueSet> ListValues()
+        public IQueryable<Users> List()
         {
-            return container.ValueSet;
+            return container.Users;
         }
 
-        public ValueSet GetValue(int id)
+        public Users Get(Guid id)
         {
-            return container.ValueSet.First(value=>value.Id == id);
+            return container.Users.First(value=>value.Id == id);
         }
 
-        public ValueSet AddValue(ValueSet value)
+        public Users Add(Users value)
         {            
-            container.AddToValueSet(value);
+            container.AddToUsers(value);
             container.SaveChanges();
             
             return value;
         }
 
-        public ValueSet UpdateValue(int id, ValueSet valueClass)
+        public Users Update(Guid id, Users value)
         {
-            var result = container.ValueSet.First(val => val.Id == id);
-            result.Name = valueClass.Name;
+            var result = container.Users.First(user => user.Id == id);
+            result.Name = value.Name;
+            result.IsAnonymous = value.IsAnonymous;
             container.SaveChanges();
             
             return result;
         }
 
-        public ValueSet DeleteValue(int id)
+        public Users Delete(Guid id)
         {            
-            var result = container.ValueSet.First(val=>val.Id == id);            
+            var result = container.Users.First(user=>user.Id == id);            
             container.DeleteObject(result);
             container.SaveChanges();
 
             return result;
         }
-        
     }
 }

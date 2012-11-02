@@ -4,31 +4,47 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ASPNETDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+    <Schema Namespace="ASPNETDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="ASPNETDBModelStoreContainer">
-          <EntitySet Name="ValueSet" EntityType="ASPNETDBModel.Store.ValueSet" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="aspnet_Users" EntityType="ASPNETDBModel.Store.aspnet_Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="ASPNETDBModel.Store.Users" store:Type="Tables" Schema="dbo" />
         </EntityContainer>
-        <EntityType Name="ValueSet">
+        <EntityType Name="aspnet_Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredUserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="MobileAlias" Type="nvarchar" MaxLength="16" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ASPNETDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
         <EntityContainer Name="DataContainer">
-          <EntitySet Name="ValueSet" EntityType="ASPNETDBModel.ValueSet" />
+          <EntitySet Name="Users" EntityType="ASPNETDBModel.Users" />
         </EntityContainer>
-        <EntityType Name="ValueSet">
+        <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="IsAnonymous" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -36,10 +52,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
         <EntityContainerMapping StorageEntityContainer="ASPNETDBModelStoreContainer" CdmEntityContainer="DataContainer">
-          <EntitySetMapping Name="ValueSet"><EntityTypeMapping TypeName="ASPNETDBModel.ValueSet"><MappingFragment StoreEntitySet="ValueSet">
-            <ScalarProperty Name="Id" ColumnName="Id" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ASPNETDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -61,7 +83,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Data">
-        <EntityTypeShape EntityType="ASPNETDBModel.ValueSet" Width="1.5" PointX="0.75" PointY="0.75" Height="1.4033821614583331" IsExpanded="true" />
+        <EntityTypeShape EntityType="ASPNETDBModel.Users" Width="1.5" PointX="0.5" PointY="0.5" Height="1.7879850260416674" />
       </Diagram>
     </Diagrams>
   </Designer>

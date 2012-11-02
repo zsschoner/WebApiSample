@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Net.Http.Formatting;
+using ApiMvc.Controllers;
 
 namespace ApiMvc
 {
@@ -13,8 +14,13 @@ namespace ApiMvc
         {
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{controller}/{uid}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+            config.Routes.MapHttpRoute(
+                name: "RestUserUpdate",
+                routeTemplate: "api/{controller}/{id}/{username}/{name}/{isanonymous}",
+                defaults: new { id = RouteParameter.Optional, controller = "User" }
             );
 
             // Adds JSON MediaTypeFormatter for text/html request

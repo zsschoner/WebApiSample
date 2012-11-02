@@ -19,9 +19,9 @@ namespace ApiWCF
         /// </summary>
         /// <returns></returns>
         /// <remarks>TODO: Cannot display IQueryable</remarks>
-        public IEnumerable<ValueModel> Values()
+        public IEnumerable<UserModel> Values()
         {
-            return CommonServer.ValuesOperations.ListValues().AsQueryable();
+            return CommonServer.UserOperations.ListValues();//.AsQueryable();
         }
 
         /// <summary>
@@ -30,31 +30,29 @@ namespace ApiWCF
         /// <param name="id"></param>
         /// <returns></returns>
         /// <remarks>Route parameter must be string in WCF otherwise it won't be bound</remarks>
-        public ValueModel Get(string id)
+        public UserModel Get(string id)
         {
-            return CommonServer.ValuesOperations.GetValue(int.Parse(id));
+            return CommonServer.UserOperations.GetValue(Guid.Parse(id));
         }
 
-        public ValueModel Post(ValueModel model)
+        public UserModel Post(UserModel model)
         {
-            return CommonServer.ValuesOperations.CreateValue(model);
+            return CommonServer.UserOperations.CreateValue(model);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <remarks>Query string parameter can be int, long etc.</remarks>
-        public ValueModel Put(string id, ValueModel model)
+        public UserModel Put(string id, UserModel model)
         {
-            return CommonServer.ValuesOperations.UpdateValue(int.Parse(id), model);
+            return CommonServer.UserOperations.UpdateValue(Guid.Parse(id), model);
         }
 
-        public ValueModel Delete(string id)
+        public UserModel PutUri(string id, string username, string name, string isAnonymous)
         {
-            return CommonServer.ValuesOperations.DeleteValue(new ValueModel() { Id = int.Parse(id) });
+            return Put(id, new UserModel() { UserName = username, Name = name, IsAnonymous = bool.Parse(isAnonymous) });
+        }
+
+        public UserModel Delete(string id)
+        {
+            return CommonServer.UserOperations.DeleteValue(new UserModel() { Id = Guid.Parse(id) });
         }
     }
 }

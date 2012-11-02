@@ -11,7 +11,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 2012.10.25. 22:22:37
+// Generation date: 2012.11.02. 12:55:09
 namespace Data
 {
     
@@ -46,54 +46,56 @@ namespace Data
         }
         partial void OnContextCreated();
         /// <summary>
-        /// There are no comments for ValueSet in the schema.
+        /// There are no comments for Users in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<ValueSet> ValueSet
+        public global::System.Data.Objects.ObjectQuery<Users> Users
         {
             get
             {
-                if ((this._ValueSet == null))
+                if ((this._Users == null))
                 {
-                    this._ValueSet = base.CreateQuery<ValueSet>("[ValueSet]");
+                    this._Users = base.CreateQuery<Users>("[Users]");
                 }
-                return this._ValueSet;
+                return this._Users;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Data.Objects.ObjectQuery<ValueSet> _ValueSet;
+        private global::System.Data.Objects.ObjectQuery<Users> _Users;
         /// <summary>
-        /// There are no comments for ValueSet in the schema.
+        /// There are no comments for Users in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToValueSet(ValueSet valueSet)
+        public void AddToUsers(Users users)
         {
-            base.AddObject("ValueSet", valueSet);
+            base.AddObject("Users", users);
         }
     }
     /// <summary>
-    /// There are no comments for ASPNETDBModel.ValueSet in the schema.
+    /// There are no comments for ASPNETDBModel.Users in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ASPNETDBModel", Name="ValueSet")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="ASPNETDBModel", Name="Users")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class ValueSet : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class Users : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new ValueSet object.
+        /// Create a new Users object.
         /// </summary>
         /// <param name="id">Initial value of Id.</param>
-        /// <param name="name">Initial value of Name.</param>
+        /// <param name="userName">Initial value of UserName.</param>
+        /// <param name="isAnonymous">Initial value of IsAnonymous.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static ValueSet CreateValueSet(int id, string name)
+        public static Users CreateUsers(global::System.Guid id, string userName, bool isAnonymous)
         {
-            ValueSet valueSet = new ValueSet();
-            valueSet.Id = id;
-            valueSet.Name = name;
-            return valueSet;
+            Users users = new Users();
+            users.Id = id;
+            users.UserName = userName;
+            users.IsAnonymous = isAnonymous;
+            return users;
         }
         /// <summary>
         /// There are no comments for property Id in the schema.
@@ -101,7 +103,7 @@ namespace Data
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public int Id
+        public global::System.Guid Id
         {
             get
             {
@@ -117,15 +119,42 @@ namespace Data
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private int _Id;
+        private global::System.Guid _Id;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnIdChanging(int value);
+        partial void OnIdChanging(global::System.Guid value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnIdChanged();
         /// <summary>
-        /// There are no comments for property Name in the schema.
+        /// There are no comments for property UserName in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string UserName
+        {
+            get
+            {
+                return this._UserName;
+            }
+            set
+            {
+                this.OnUserNameChanging(value);
+                this.ReportPropertyChanging("UserName");
+                this._UserName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("UserName");
+                this.OnUserNameChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _UserName;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnUserNameChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnUserNameChanged();
+        /// <summary>
+        /// There are no comments for property Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         public string Name
@@ -138,7 +167,7 @@ namespace Data
             {
                 this.OnNameChanging(value);
                 this.ReportPropertyChanging("Name");
-                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
                 this.ReportPropertyChanged("Name");
                 this.OnNameChanged();
             }
@@ -149,5 +178,32 @@ namespace Data
         partial void OnNameChanging(string value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnNameChanged();
+        /// <summary>
+        /// There are no comments for property IsAnonymous in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public bool IsAnonymous
+        {
+            get
+            {
+                return this._IsAnonymous;
+            }
+            set
+            {
+                this.OnIsAnonymousChanging(value);
+                this.ReportPropertyChanging("IsAnonymous");
+                this._IsAnonymous = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("IsAnonymous");
+                this.OnIsAnonymousChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private bool _IsAnonymous;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIsAnonymousChanging(bool value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIsAnonymousChanged();
     }
 }

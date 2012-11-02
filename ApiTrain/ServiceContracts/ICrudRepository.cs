@@ -7,10 +7,10 @@ namespace ServiceContracts
 {
     public interface ICrudRepository<TEntity>
     {
-        IQueryable<TEntity> ListValues();
-        TEntity GetValue(int id);
-        TEntity AddValue(TEntity value);
-        TEntity UpdateValue(int id, TEntity valueClass);
-        TEntity DeleteValue(int id);
+        IQueryable<TEntity> List();
+        TEntity Get(Guid id);
+        TEntity Add(TEntity value);
+        TEntity Update(Guid id, TEntity value);
+        TEntity Delete(Guid id);
     }
 }

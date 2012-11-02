@@ -153,14 +153,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceStack\AppHost.cs" />
-    <Compile Include="ServiceStack\Interface\GetValueService.cs" />
-    <Compile Include="ServiceStack\Interface\ValuesService.cs" />
+    <Compile Include="ServiceStack\Interface\GetUserService.cs" />
+    <Compile Include="ServiceStack\Interface\UserService.cs" />
     <Compile Include="ServiceStack\Model\ValuesOperations.cs" />
     <Compile Include="WCF\ApiService.svc.cs">
       <DependentUpon>ApiService.svc</DependentUpon>

@@ -68,7 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ValueModel.cs" />
+    <Compile Include="Model\UserModel.cs" />
     <Compile Include="ValuesOperations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

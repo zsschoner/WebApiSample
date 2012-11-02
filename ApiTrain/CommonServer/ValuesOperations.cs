@@ -8,54 +8,80 @@ using ServiceContracts;
 
 namespace CommonServer
 {
-    public static class ValuesOperations
+    public static class UserOperations
     {
-        private static ICrudRepository<ValueSet> valuesRepository;
+        private static ICrudRepository<Users> usersRepository;
 
-        private static ICrudRepository<ValueSet> CrudRepository
+        private static ICrudRepository<Users> CrudRepository
         {
             get
             {
-                if (valuesRepository == null)
+                if (usersRepository == null)
                 {
-                    valuesRepository = new ValueRepository();
+                    usersRepository = new UsersRepository();
                 }
 
-                return valuesRepository;
+                return usersRepository;
             }
         }
 
-        public static IEnumerable<ValueModel> ListValues()
+        public static IEnumerable<UserModel> ListValues()
         {
-            return CrudRepository.ListValues().Select(value => new ValueModel() { Id = value.Id, Name = value.Name });
+            return CrudRepository.List()
+                                 .Select(value => new UserModel()
+                                 {
+                                     Id = value.Id,
+                                     Name = value.Name,
+                                     UserName = value.UserName,
+                                     IsAnonymous = value.IsAnonymous
+                                 });
         }
 
-        public static ValueModel GetValue(int id)
+        public static UserModel GetValue(Guid id)
         {
-            var data = CrudRepository.GetValue(id);
-            return new ValueModel() { Id = data.Id, Name = data.Name };
+            var data = CrudRepository.Get(id);
+            return new UserModel() { Id = data.Id, Name = data.Name };
         }
 
-        public static ValueModel CreateValue(ValueModel value)
+        public static UserModel CreateValue(UserModel value)
         {
-            var result = CrudRepository.AddValue(new ValueSet() { Name = value.Name });
+            var result = CrudRepository.Add(new Users()
+            {
+                Id = Guid.NewGuid(),
+                Name = value.Name,
+                UserName = value.UserName,
+                IsAnonymous = value.IsAnonymous
+            });
+
             value.Id = result.Id;
 
             // Created item
             return value;
         }
 
-        public static ValueModel UpdateValue(int id, ValueModel value)
+        public static UserModel UpdateValue(Guid id, UserModel value)
         {
-            var result = CrudRepository.UpdateValue(id, new ValueSet() { Id = value.Id, Name = value.Name });
-
+            var result = CrudRepository.Update(id, new Users()
+            {
+                Id = value.Id,
+                Name = value.Name,
+                UserName = value.UserName,
+                IsAnonymous = value.IsAnonymous
+            });
+            
+            value.Id = id;
+            
             return value;
         }
 
-        public static ValueModel DeleteValue(ValueModel model)
+        public static UserModel DeleteValue(UserModel model)
         {
-            var result = CrudRepository.DeleteValue(model.Id);
-            return new ValueModel() { Id = result.Id, Name = result.Name };
+            var result = CrudRepository.Delete(model.Id);
+            model.Name = result.Name;
+            model.UserName = result.UserName;
+            model.IsAnonymous = result.IsAnonymous;
+
+            return model;
         }
     }
 }
