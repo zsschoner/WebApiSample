@@ -13,6 +13,7 @@ namespace ApiMvc
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.svc/{*pathInfo}");
+            routes.IgnoreRoute("customapi/{*pathInfo}");
 
             routes.MapRoute(
                 name: "Default",

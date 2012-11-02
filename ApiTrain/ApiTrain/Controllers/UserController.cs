@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
-using CommonServer.Model;
+using Common.Model;
 using System.Collections.Generic;
-using CommonServer;
+using Common;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web;
@@ -20,19 +20,19 @@ namespace ApiMvc.Controllers
         // in JSON format
         public IEnumerable<UserModel> Get()
         {
-            return UserOperations.ListValues();
+            return Data.UserOperations.List();
         }
 
         // GET api/values/5
         public UserModel Get(Guid id)
         {
-            return CommonServer.UserOperations.GetValue(id);
+            return Data.UserOperations.Get(id);
         }
 
         // POST api/values
         public UserModel Post([FromBody]UserModel value)
         {
-            return CommonServer.UserOperations.CreateValue(value);
+            return Data.UserOperations.Create(value);
         }
 
         // PUT /api/user/66cfbd2dd52f418e88152260f24aed7c
@@ -40,19 +40,19 @@ namespace ApiMvc.Controllers
         public UserModel Put(Guid uid, [FromBody]UserModel value)
         {
             value.Id = uid;
-            return CommonServer.UserOperations.UpdateValue(uid, value);
+            return Data.UserOperations.Update(uid, value);
         }
 
         // PUT /api/user/66cfbd2dd52f418e88152260f24aed7c/zsschoner/Zsolt_Schoner/true
         public UserModel Put([FromUri]UserModel value)
         {
-            return CommonServer.UserOperations.UpdateValue(value.Id, value);
+            return Data.UserOperations.Update(value.Id, value);
         }
 
         // DELETE api/values/5
         public UserModel Delete(Guid id)
         {
-            return CommonServer.UserOperations.DeleteValue(new UserModel() { Id = id });
+            return Data.UserOperations.Delete(new UserModel() { Id = id });
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using CommonServer.Model;
+using Common.Model;
 using System.Linq;
 using System;
 

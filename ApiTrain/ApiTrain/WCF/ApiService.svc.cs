@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
-using CommonServer.Model;
+using Common.Model;
 using System.ServiceModel.Activation;
 
 namespace ApiWCF
@@ -21,7 +21,7 @@ namespace ApiWCF
         /// <remarks>TODO: Cannot display IQueryable</remarks>
         public IEnumerable<UserModel> Values()
         {
-            return CommonServer.UserOperations.ListValues();//.AsQueryable();
+            return Data.UserOperations.List();//.AsQueryable();
         }
 
         /// <summary>
@@ -32,17 +32,17 @@ namespace ApiWCF
         /// <remarks>Route parameter must be string in WCF otherwise it won't be bound</remarks>
         public UserModel Get(string id)
         {
-            return CommonServer.UserOperations.GetValue(Guid.Parse(id));
+            return Data.UserOperations.Get(Guid.Parse(id));
         }
 
         public UserModel Post(UserModel model)
         {
-            return CommonServer.UserOperations.CreateValue(model);
+            return Data.UserOperations.Create(model);
         }
 
         public UserModel Put(string id, UserModel model)
         {
-            return CommonServer.UserOperations.UpdateValue(Guid.Parse(id), model);
+            return Data.UserOperations.Update(Guid.Parse(id), model);
         }
 
         public UserModel PutUri(string id, string username, string name, string isAnonymous)
@@ -52,7 +52,7 @@ namespace ApiWCF
 
         public UserModel Delete(string id)
         {
-            return CommonServer.UserOperations.DeleteValue(new UserModel() { Id = Guid.Parse(id) });
+            return Data.UserOperations.Delete(new UserModel() { Id = Guid.Parse(id) });
         }
     }
 }

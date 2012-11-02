@@ -49,10 +49,15 @@
       <DependentUpon>Data.edmx</DependentUpon>
     </Compile>
     <Compile Include="Entity\ValueClass.cs" />
+    <Compile Include="UsersOperations.cs" />
     <Compile Include="ValueRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServer\Common.csproj">
+      <Project>{28316950-3611-400E-989D-07A7453574BC}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceContracts\ServiceContracts.csproj">
       <Project>{17C7A2D8-670E-4079-8B0E-1FECDC7F9885}</Project>
       <Name>ServiceContracts</Name>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using ServiceStack.ServiceHost;
 
-namespace CommonServer.Model
+namespace Common.Model
 {
     // User model for service operations
     public class UserModel

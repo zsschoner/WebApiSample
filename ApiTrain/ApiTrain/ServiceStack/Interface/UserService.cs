@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using ServiceStack.ServiceHost;
 using ApiServiceStack.ServiceModel.ValuesOperations;
-using CommonServer.Model;
-using CommonServer;
+using Common.Model;
+using Common;
 using System;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Common.Web;
@@ -15,10 +15,10 @@ namespace ApiServiceStack.ServiceInterface
         {
             object result = null;
             if (request == null || request.Id == Guid.Empty)
-                result = CommonServer.UserOperations.ListValues();
+                result = Data.UserOperations.List();
             else
             {
-                result = CommonServer.UserOperations.GetValue(request.Id);
+                result = Data.UserOperations.Get(request.Id);
             }
 
             return result;
@@ -26,17 +26,17 @@ namespace ApiServiceStack.ServiceInterface
 
         public override object OnPost(UserViewModel request)
         {
-            return CommonServer.UserOperations.CreateValue(request);
+            return Data.UserOperations.Create(request);
         }
 
         public override object OnPut(UserViewModel request)
         {
-            return CommonServer.UserOperations.UpdateValue(request.Id, request);
+            return Data.UserOperations.Update(request.Id, request);
         }
 
         public override object OnDelete(UserViewModel request)
         {
-            return CommonServer.UserOperations.DeleteValue(request);
+            return Data.UserOperations.Delete(request);
         }
 
         public override string ServiceName

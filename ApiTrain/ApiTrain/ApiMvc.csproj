@@ -12,7 +12,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ApiMvc</RootNamespace>
-    <AssemblyName>ApiTrain</AssemblyName>
+    <AssemblyName>ApiMvc</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
@@ -154,6 +154,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="CustomApi.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -161,7 +162,7 @@
     <Compile Include="ServiceStack\AppHost.cs" />
     <Compile Include="ServiceStack\Interface\GetUserService.cs" />
     <Compile Include="ServiceStack\Interface\UserService.cs" />
-    <Compile Include="ServiceStack\Model\ValuesOperations.cs" />
+    <Compile Include="ServiceStack\Model\UserOperations.cs" />
     <Compile Include="WCF\ApiService.svc.cs">
       <DependentUpon>ApiService.svc</DependentUpon>
     </Compile>
@@ -278,9 +279,13 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonServer\CommonServer.csproj">
+    <ProjectReference Include="..\CommonServer\Common.csproj">
       <Project>{28316950-3611-400E-989D-07A7453574BC}</Project>
-      <Name>CommonServer</Name>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{6F79103B-EACE-475A-AFB8-1A423967D5D8}</Project>
+      <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
