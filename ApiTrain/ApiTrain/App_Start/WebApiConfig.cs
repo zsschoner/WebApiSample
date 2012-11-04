@@ -15,7 +15,7 @@ namespace ApiMvc
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{uid}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { uid = RouteParameter.Optional }
             );
             config.Routes.MapHttpRoute(
                 name: "RestUserUpdate",
