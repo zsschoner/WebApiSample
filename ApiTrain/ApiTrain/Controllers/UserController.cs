@@ -1,14 +1,11 @@
 ﻿using System.Web.Http;
 using Common.Model;
 using System.Collections.Generic;
-using Common;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using System.Web;
-using System.Runtime.Serialization;
-using System.Linq;
 using System;
-using System.Web.Http.Description;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
+using System.Linq;
 
 namespace ApiMvc.Controllers
 {
@@ -17,43 +14,96 @@ namespace ApiMvc.Controllers
         // GET api/values
         // Result will be sent based on Accept header.
         // If Accept header is in chrome like default: Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        // the result will be sent in xml, but if the client set Accept: application/json header the result will be sent
+        // the result will sent in xml, but if the client set Accept: application/json header the result will be sent
         // in JSON format
-        public IEnumerable<UserModel> Get()
+        [Queryable]
+        public IQueryable<UserModel> Get()
         {
-            return Data.UserOperations.List();
+            try
+            {
+                return Data.UserOperations.List().AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
+            }
         }
 
         // GET api/values/5
         public UserModel Get(Guid id)
         {
-            return Data.UserOperations.Get(id);
+            try
+            {
+                return Data.UserOperations.Get(id);
+            }
+            catch (Exception ex)
+            {
+                var emsg = new System.Net.Http.HttpResponseMessage(HttpStatusCode.BadRequest);
+                // Send the error message to the client
+                emsg.ReasonPhrase = ex.Message;
+                throw new HttpResponseException(emsg);
+            }
         }
 
         // POST api/values
-        public UserModel Post([FromBody]UserModel value)
+        public HttpResponseMessage Post([FromBody]UserModel value)
         {
-            return Data.UserOperations.Create(value);
+            try
+            {
+                var resultValue = Data.UserOperations.Create(value);
+
+                return Request.CreateResponse<UserModel>(HttpStatusCode.Created, resultValue);
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
+            }
         }
 
         // PUT /api/user/66cfbd2dd52f418e88152260f24aed7c
         // body: {"Name":"Zsolt Schoner", Username:"zsschoner", "IsAnonymous":"false"}
         public UserModel Put(Guid uid, [FromBody]UserModel value)
         {
-            value.Id = uid;
-            return Data.UserOperations.Update(uid, value);
+            try
+            {
+                value.Id = uid;
+                return Data.UserOperations.Update(uid, value);
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
+            }
         }
 
         // PUT /api/user/66cfbd2dd52f418e88152260f24aed7c/zsschoner/Zsolt_Schoner/true
         public UserModel Put([FromUri]UserModel value)
         {
-            return Data.UserOperations.Update(value.Id, value);
+            try
+            {
+                return Data.UserOperations.Update(value.Id, value);
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
+            }
         }
 
         // DELETE api/values/5
         public UserModel Delete(Guid id)
         {
-            return Data.UserOperations.Delete(new UserModel() { Id = id });
+            try
+            {
+                return Data.UserOperations.Delete(new UserModel() { Id = id });
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
+            }
         }
     }
 }

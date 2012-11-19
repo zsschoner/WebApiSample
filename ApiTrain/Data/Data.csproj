@@ -50,7 +50,7 @@
     </Compile>
     <Compile Include="Entity\ValueClass.cs" />
     <Compile Include="UsersOperations.cs" />
-    <Compile Include="ValueRepository.cs" />
+    <Compile Include="UsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

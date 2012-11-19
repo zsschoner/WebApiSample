@@ -12,11 +12,14 @@ namespace ApiMvc
     {
         public static void Register(HttpConfiguration config)
         {
+            // Default API route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{uid}",
                 defaults: new { uid = RouteParameter.Optional }
             );
+
+            // Rest parameterized URL
             config.Routes.MapHttpRoute(
                 name: "RestUserUpdate",
                 routeTemplate: "api/{controller}/{id}/{username}/{name}/{isanonymous}",

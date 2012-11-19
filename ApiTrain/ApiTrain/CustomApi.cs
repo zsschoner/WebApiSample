@@ -95,13 +95,13 @@ namespace ApiMvc
             switch (json)
             {
                 case true: return Json.Decode<UserModel>(context.Request.ContentEncoding.GetString(request));
-                    break;
+                    
                 default:
                     var ds = new XmlSerializer(typeof(UserModel));
                     MemoryStream ms = new MemoryStream(request);
 
                     return (UserModel)ds.Deserialize(ms);
-                    break;
+                    
             }
         }
 
