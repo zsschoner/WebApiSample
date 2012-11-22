@@ -13,6 +13,9 @@ namespace ApiMvc.Controllers
     /// </summary>
     public class UserMvcController : Mvc.Controller
     {
+        /// <summary>
+        /// Repository instance can be injected in the constructor
+        /// </summary>
         private readonly IUserOperations repository_;
         
         //
@@ -23,25 +26,45 @@ namespace ApiMvc.Controllers
             repository_ = Data.UserOperations.Instance;
         }
 
+        /// <summary>
+        /// Gets a list of users
+        /// </summary>
+        /// <returns></returns>
+        /// /user
         [Mvc.HttpGet]
         public Mvc.JsonResult List()
         {
             return new Mvc.JsonResult() { Data = repository_.List(), JsonRequestBehavior = Mvc.JsonRequestBehavior.AllowGet };
         }
 
+        /// <summary>
+        /// Gets a user specified by uid
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         [Mvc.HttpGet]
         public Mvc.JsonResult Index(Guid uid)
         {
             return new Mvc.JsonResult() { Data = repository_.Get(uid), JsonRequestBehavior = Mvc.JsonRequestBehavior.AllowGet };
         }
 
-        // POST api/values
+        /// <summary>
+        /// Creates a user based on value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Mvc.HttpPost]
         public Mvc.JsonResult Index([Http.FromBody]UserModel value)
         {
             return new Mvc.JsonResult() { Data = repository_.Create(value) };
         }
 
+        /// <summary>
+        /// Updates the user based on value
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Mvc.HttpPut]
         public Mvc.JsonResult Index(Guid uid, [Http.FromBody]UserModel value)
         {
@@ -49,6 +72,11 @@ namespace ApiMvc.Controllers
             return new Mvc.JsonResult() { Data = repository_.Update(uid, value) };
         }
 
+        /// <summary>
+        /// Deletes a user specified by uid
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         [Mvc.HttpDelete]
         public Mvc.JsonResult Index(string uid)
         {

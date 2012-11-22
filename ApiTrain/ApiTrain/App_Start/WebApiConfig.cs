@@ -23,6 +23,7 @@ namespace ApiMvc
             );
 
             // Adds JSON MediaTypeFormatter for text/html request
+            // You can set almost everything through configuration
             var cfg = config.Formatters.OfType<JsonMediaTypeFormatter>().FirstOrDefault();
             if (cfg != null)
             {

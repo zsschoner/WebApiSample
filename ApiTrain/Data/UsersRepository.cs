@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ServiceContracts;
+using System.Transactions;
 
 namespace Data
 {
@@ -27,7 +28,7 @@ namespace Data
         /// <returns></returns>
         public Users Get(Guid id)
         {
-            return Container.Users.First(value=>value.Id == id);
+            return Container.Users.First(value => value.Id == id);
         }
 
         /// <summary>
@@ -36,11 +37,17 @@ namespace Data
         /// <param name="value"></param>
         /// <returns></returns>
         public Users Create(Users value)
-        {            
-            Container.AddToUsers(value);
-            Container.SaveChanges();
-            
+        {
+            using (var tr = new TransactionScope())
+            {
+                Container.AddToUsers(value);
+                Container.SaveChanges();
+
+                tr.Complete();
+            }
+
             return value;
+
         }
 
         /// <summary>
@@ -52,11 +59,18 @@ namespace Data
         public Users Update(Guid id, Users value)
         {
             var result = Container.Users.First(user => user.Id == id);
-            result.Name = value.Name;
-            result.IsAnonymous = value.IsAnonymous;
-            Container.SaveChanges();
-            
-            return result;
+
+            using (var tr = new TransactionScope())
+            {
+                result.Name = value.Name;
+                result.IsAnonymous = value.IsAnonymous;
+
+                Container.SaveChanges();
+
+                tr.Complete();
+                return result;
+            }
+
         }
 
         /// <summary>
@@ -65,12 +79,18 @@ namespace Data
         /// <param name="id"></param>
         /// <returns></returns>
         public Users Delete(Guid id)
-        {            
-            var result = Container.Users.First(user=>user.Id == id);            
-            Container.DeleteObject(result);
-            Container.SaveChanges();
+        {
+            var result = Container.Users.FirstOrDefault(user => user.Id == id);
+            if (result == null) return result;
 
-            return result;
+            using (var tr = new TransactionScope())
+            {
+                Container.DeleteObject(result);
+                Container.SaveChanges();
+                tr.Complete();
+
+                return result;
+            }
         }
     }
 }

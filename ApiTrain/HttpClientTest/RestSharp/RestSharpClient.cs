@@ -12,7 +12,7 @@ namespace HttpClientTest
     public class RestSharpClient
     {
         private const string baseUrl = "http://localhost:82/api/user";
-        private static List<UserModel> models = new List<UserModel>();
+        private static readonly List<UserModel> Models = new List<UserModel>();
 
         /// <summary>
         /// Gets selected id from the console
@@ -20,11 +20,12 @@ namespace HttpClientTest
         /// <returns></returns>
         private static Guid GetSelectedId()
         {
-            Guid id = Guid.Empty;
+            var id = Guid.Empty;
 
-            if (models.Any())
+            if (Models.Any())
             {
-                models.ForEach(model => Console.WriteLine(String.Format("Id{0} - UserName{1}", model.Id, model.UserName)));
+                Console.WriteLine("Id - UserName");
+                Models.ForEach(model => Console.WriteLine(String.Format("{0} - {1}", model.Id, model.UserName)));
                 Console.WriteLine();
                 Console.WriteLine("Paste id and press Enter");
                 var str = Console.ReadLine();
@@ -34,11 +35,13 @@ namespace HttpClientTest
             return id;
         }
 
-        private static IRestRequest CreateRequest(RestSharp.Method method)
+        private static IRestRequest CreateRequest(Method method)
         {
-            var result = new RestRequest() { Method = method };
-            result.JsonSerializer = new JsonSerializer();
-            result.JsonSerializer.ContentType = "application/json";
+            var result = new RestRequest
+                             {
+                                 Method = method,
+                                 JsonSerializer = new JsonSerializer { ContentType = "application/json" }
+                             };
             result.AddHeader("Content-Type", "application/json");
             result.AddHeader("Accept", "application/json");
             result.RequestFormat = DataFormat.Json;
@@ -48,18 +51,32 @@ namespace HttpClientTest
 
         public static void GetList()
         {
-            RestClient c = new RestSharp.RestClient(baseUrl);
-            List<UserModel> res = Enumerable.Empty<UserModel>().ToList();
-            var resp = c.Get(CreateRequest(RestSharp.Method.GET));
+            var c = new RestClient(baseUrl);
+            var resp = c.Get(CreateRequest(Method.GET));
+            if (!Models.Any()) WriteResult("GET LIST", resp);
 
+            Models.Clear();
+            
+            if(string.IsNullOrEmpty(resp.Content))
+            {
+                return;
+            }
+            
             var ds = new JsonDeserializer();
             var obj = ds.Deserialize<List<UserModel>>(resp);
+            
             if (obj != null)
             {
-                models.AddRange(obj);
+                Models.AddRange(obj);
             }
 
+        }
+
+        private static void WriteResult(String method, IRestResponse resp)
+        {
+            Console.WriteLine(String.Format("==== {0} Result =====", resp.Request != null ? resp.Request.Method.ToString() : method));
             Console.WriteLine(resp.Content);
+            Console.WriteLine("=================");
         }
 
         public static void Get()
@@ -68,32 +85,29 @@ namespace HttpClientTest
 
             if (id != Guid.Empty)
             {
-                RestClient c = new RestSharp.RestClient(String.Format("{0}/{1}", baseUrl, id));
+                var c = new RestClient(String.Format("{0}/{1}", baseUrl, id));
                 List<UserModel> res = Enumerable.Empty<UserModel>().ToList();
                 c.GetAsync<List<UserModel>>(CreateRequest(RestSharp.Method.GET), (resp, result) =>
                 {
                     //var ds = new JsonDeserializer();
                     res = resp.Data;
-                    Console.WriteLine(resp.Content);
+                    WriteResult("GET", resp);
                 });
             }
         }
 
         public static void Post()
         {
-            RestClient c = new RestSharp.RestClient(baseUrl);
+            var c = new RestClient(baseUrl);
             List<UserModel> res = Enumerable.Empty<UserModel>().ToList();
             var model = new UserModel()
-            {
-                UserName = "User - " + Guid.NewGuid().ToString(),
-                Name = "RestClient user",
-                IsAnonymous = false
-            };
+                            {
+                                UserName = "User - " + Guid.NewGuid().ToString(),
+                                Name = "RestClient user",
+                                IsAnonymous = false
+                            };
 
-            c.PostAsync<UserModel>(CreateRequest(RestSharp.Method.POST).AddBody(model), (resp, result) =>
-            {
-                Console.WriteLine(resp.Content);
-            });
+            c.PostAsync<UserModel>(CreateRequest(Method.POST).AddBody(model), (resp, result) => WriteResult("POST", resp));
         }
 
         public static void Put()
@@ -102,14 +116,11 @@ namespace HttpClientTest
 
             if (id != Guid.Empty)
             {
-                RestClient c = new RestSharp.RestClient(String.Format("{0}/{1}", baseUrl, id));
-                var model = models.First(user => user.Id == id);
+                var c = new RestSharp.RestClient(String.Format("{0}", baseUrl));
+                var model = Models.First(user => user.Id == id);
                 model.Name = "RestClient user updated";
 
-                c.PutAsync<UserModel>(CreateRequest(RestSharp.Method.PUT).AddBody(model), (resp, result) =>
-                {
-                    Console.WriteLine(resp.Content);
-                });
+                c.PutAsync<UserModel>(CreateRequest(Method.PUT).AddBody(model), (resp, result) => WriteResult("PUT", resp));
             }
         }
 
@@ -119,12 +130,9 @@ namespace HttpClientTest
 
             if (id != Guid.Empty)
             {
-                RestClient c = new RestSharp.RestClient(String.Format("{0}/{1}", baseUrl, id));
+                var c = new RestClient(String.Format("{0}/{1}", baseUrl, id));
 
-                c.DeleteAsync<UserModel>(CreateRequest(RestSharp.Method.DELETE), (resp, result) =>
-                {
-                    Console.WriteLine(resp.Content);
-                });
+                c.DeleteAsync<UserModel>(CreateRequest(Method.DELETE), (resp, result) => WriteResult("DELETE", resp));
             }
         }
     }

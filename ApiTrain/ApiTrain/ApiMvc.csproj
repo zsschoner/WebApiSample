@@ -180,7 +180,7 @@
     <Compile Include="ServiceStack\AppHost.cs" />
     <Compile Include="ServiceStack\Interface\GetUserService.cs" />
     <Compile Include="ServiceStack\Interface\UserService.cs" />
-    <Compile Include="ServiceStack\Model\UserOperations.cs" />
+    <Compile Include="ServiceStack\Model\UserResources.cs" />
     <Compile Include="wcf.svc.cs">
       <DependentUpon>wcf.svc</DependentUpon>
     </Compile>

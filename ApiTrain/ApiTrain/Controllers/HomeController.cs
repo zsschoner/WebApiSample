@@ -11,6 +11,10 @@ namespace ApiMvc.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Explores registered web apis in the solution
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ExploreApis()
         {
             return View(new ApiModel(GlobalConfiguration.Configuration.Services.GetApiExplorer()));

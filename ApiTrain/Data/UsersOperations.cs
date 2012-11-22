@@ -24,7 +24,7 @@ namespace Data
         /// The repository instance
         /// </summary>
         private static ICrudRepository<Users> UsersRepository;
-        private static UserOperations instance_;
+        private static UserOperations instance;
 
         private static ICrudRepository<Users> CrudRepository
         {
@@ -36,11 +36,14 @@ namespace Data
             
         }
 
+        /// <summary>
+        /// Just for the simple usage
+        /// </summary>
         public static IUserOperations Instance
         {
             get
             {
-                return instance_ ?? (instance_ = new UserOperations());
+                return instance ?? (instance = new UserOperations());
             }
         }
 
@@ -121,9 +124,12 @@ namespace Data
         public UserModel Delete(UserModel model)
         {
             var result = CrudRepository.Delete(model.Id);
-            model.Name = result.Name;
-            model.UserName = result.UserName;
-            model.IsAnonymous = result.IsAnonymous;
+            if (result != null)
+            {
+                model.Name = result.Name;
+                model.UserName = result.UserName;
+                model.IsAnonymous = result.IsAnonymous;
+            }
 
             return model;
         }
