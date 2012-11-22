@@ -1,16 +1,21 @@
 ﻿using System.Web.Http;
 using Common.Model;
-using System.Collections.Generic;
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Linq;
 
 namespace ApiMvc.Controllers
 {
     public class UserController : ApiController
     {
+        private readonly Data.IUserOperations repository_;
+
+        public  UserController()
+        {
+            repository_ = Data.UserOperations.Instance;
+        }
+
         // GET api/values
         // Result will be sent based on Accept header.
         // If Accept header is in chrome like default: Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
@@ -21,7 +26,7 @@ namespace ApiMvc.Controllers
         {
             try
             {
-                return Data.UserOperations.List().AsQueryable();
+                return repository_.List().AsQueryable();
             }
             catch (Exception ex)
             {
@@ -35,7 +40,7 @@ namespace ApiMvc.Controllers
         {
             try
             {
-                return Data.UserOperations.Get(id);
+                return repository_.Get(id);
             }
             catch (Exception ex)
             {
@@ -51,7 +56,7 @@ namespace ApiMvc.Controllers
         {
             try
             {
-                var resultValue = Data.UserOperations.Create(value);
+                var resultValue = repository_.Create(value);
 
                 return Request.CreateResponse<UserModel>(HttpStatusCode.Created, resultValue);
             }
@@ -69,7 +74,7 @@ namespace ApiMvc.Controllers
             try
             {
                 value.Id = uid;
-                return Data.UserOperations.Update(uid, value);
+                return repository_.Update(uid, value);
             }
             catch (Exception ex)
             {
@@ -83,7 +88,7 @@ namespace ApiMvc.Controllers
         {
             try
             {
-                return Data.UserOperations.Update(value.Id, value);
+                return repository_.Update(value.Id, value);
             }
             catch (Exception ex)
             {
@@ -97,7 +102,7 @@ namespace ApiMvc.Controllers
         {
             try
             {
-                return Data.UserOperations.Delete(new UserModel() { Id = id });
+                return repository_.Delete(new UserModel() { Id = id });
             }
             catch (Exception ex)
             {

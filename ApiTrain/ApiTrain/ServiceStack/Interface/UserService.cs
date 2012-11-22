@@ -1,24 +1,27 @@
-﻿using System.Linq;
-using ServiceStack.ServiceHost;
-using ApiServiceStack.ServiceModel.ValuesOperations;
-using Common.Model;
-using Common;
-using System;
+﻿using System;
 using ServiceStack.ServiceInterface;
-using ServiceStack.Common.Web;
+using ServiceStack.Model;
+using Data;
 
-namespace ApiServiceStack.ServiceInterface
+namespace ServiceStack.Interface
 {
     public class UserRestService : RestServiceBase<UserViewModel>
     {
+        private readonly IUserOperations repository_;
+
+        public UserRestService()
+        {
+            repository_ = Data.UserOperations.Instance;
+        } 
+
         public override object OnGet(UserViewModel request)
         {
             object result = null;
             if (request == null || request.Id == Guid.Empty)
-                result = Data.UserOperations.List();
+                result = repository_.List();
             else
             {
-                result = Data.UserOperations.Get(request.Id);
+                result = repository_.Get(request.Id);
             }
 
             return result;
@@ -26,17 +29,17 @@ namespace ApiServiceStack.ServiceInterface
 
         public override object OnPost(UserViewModel request)
         {
-            return Data.UserOperations.Create(request);
+            return repository_.Create(request);
         }
 
         public override object OnPut(UserViewModel request)
         {
-            return Data.UserOperations.Update(request.Id, request);
+            return repository_.Update(request.Id, request);
         }
 
         public override object OnDelete(UserViewModel request)
         {
-            return Data.UserOperations.Delete(request);
+            return repository_.Delete(request);
         }
 
         public override string ServiceName

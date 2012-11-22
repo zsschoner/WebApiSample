@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Common.Model;
@@ -11,20 +10,33 @@ using System.Xml;
 
 namespace ApiMvc
 {
+    /// <summary>
+    /// HttpHandler sample for Rest Web Service
+    /// </summary>
     public class CustomApi : IHttpHandler
     {
-        private const string JsonFormat = "application/json";
+        // Format specifiers
         private const string XmlFormat = "application/xml";
-        private const string HtmlFormat = "text/html";
+        private static Data.IUserOperations Repository;
+
+        public CustomApi()
+        {
+            Repository = Data.UserOperations.Instance;
+        }
 
         public bool IsReusable
         {
             get { return true; }
         }
 
+        /// <summary>
+        /// IHttpHandler processrequest
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             Object result = null;
+            // Routing request based on HttpMethod
             switch (context.Request.HttpMethod)
             {
                 case "GET": result = Get(context); ; break;
@@ -34,6 +46,7 @@ namespace ApiMvc
                 default: ; break;
             }
 
+            // Returns the result
             context.Response.Write(Serialize(context, result));
         }
 
@@ -41,7 +54,7 @@ namespace ApiMvc
         /// Processes get request
         /// </summary>
         /// <param name="context"></param>
-        private object Get(HttpContext context)
+        private static object Get(HttpContext context)
         {
             return Get(GetIdFromRequest(context));
         }
@@ -53,22 +66,20 @@ namespace ApiMvc
         /// <returns></returns>
         private static Guid GetIdFromRequest(HttpContext context)
         {
-
             var id = Guid.Empty;
 
-            if (context.Request.QueryString != null)
-            {
-                var idStr = context.Request.QueryString["id"];
+            // Getting id from query string
+            var idStr = context.Request.QueryString["id"];
 
-                if (!String.IsNullOrEmpty(idStr))
-                {
-                    Guid.TryParse(idStr, out id);
-                }
+            if (!String.IsNullOrEmpty(idStr))
+            {
+                Guid.TryParse(idStr, out id);
             }
 
+            // if id is not in the query string
             if (id == Guid.Empty)
             {
-                var startPos = context.Request.RawUrl.IndexOf("customapi/") + "customapi/".Length;
+                var startPos = context.Request.RawUrl.IndexOf(ServiceConstants.HttpHandlerRoot, System.StringComparison.Ordinal) + ServiceConstants.HttpHandlerRoot.Length;
                 var routepart = context.Request.RawUrl.Substring(startPos, context.Request.RawUrl.Length - startPos);
                 if (!string.IsNullOrEmpty(routepart))
                 {
@@ -79,10 +90,16 @@ namespace ApiMvc
             return id;
         }
 
+        /// <summary>
+        /// Deserializes the request
+        /// </summary>
+        /// <param name="context">the current context</param>
+        /// <returns>the deserialized UserModel if any</returns>
         private static UserModel Deserialize(HttpContext context)
         {
             byte[] request = context.Request.BinaryRead(context.Request.ContentLength);
 
+            // Handles json and xml format, by default uses Json
             var json = true;
             var format = context.Request.ContentType;
             if (!String.IsNullOrEmpty(format))
@@ -92,28 +109,31 @@ namespace ApiMvc
                     json = false;
                 }
             }
+
             switch (json)
             {
                 case true: return Json.Decode<UserModel>(context.Request.ContentEncoding.GetString(request));
-                    
+
                 default:
                     var ds = new XmlSerializer(typeof(UserModel));
-                    MemoryStream ms = new MemoryStream(request);
-
-                    return (UserModel)ds.Deserialize(ms);
-                    
+                    using (var ms = new MemoryStream(request))
+                    {
+                        return (UserModel)ds.Deserialize(ms);
+                    }
             }
         }
 
+        /// <summary>
+        /// Serializes the model
+        /// </summary>
+        /// <param name="context">current Http context </param>
+        /// <param name="model">model to serialize</param>
+        /// <returns>returns with the serialized data</returns>
         private static string Serialize(HttpContext context, object model)
         {
-            string result = String.Empty;
-            var json = true;
-            if (context.Request.AcceptTypes != null
-               && context.Request.AcceptTypes.Contains(XmlFormat))
-            {
-                json = false;
-            }
+            string result;
+            bool json = !(context.Request.AcceptTypes != null
+                          && context.Request.AcceptTypes.Contains(XmlFormat));
 
             if (json)
             {
@@ -121,13 +141,14 @@ namespace ApiMvc
             }
             else
             {
-                XmlSerializer sr = new XmlSerializer(model.GetType());
-                var ms = new MemoryStream();
+                var sr = new XmlSerializer(model.GetType());
+                using (var ms = new MemoryStream())
+                {
+                    var writer = new XmlTextWriter(ms, Encoding.UTF8);
+                    sr.Serialize(writer, model);
 
-                XmlTextWriter writer = new XmlTextWriter(ms, Encoding.UTF8);
-                sr.Serialize(writer, model);
-                ms = (MemoryStream)writer.BaseStream;
-                result = Encoding.UTF8.GetString(ms.ToArray());
+                    result = Encoding.UTF8.GetString(ms.ToArray());
+                }
             }
 
             return result;
@@ -143,11 +164,11 @@ namespace ApiMvc
 
             if (id == Guid.Empty)
             {
-                result = Data.UserOperations.List();
+                result = Repository.List();
             }
             else
             {
-                result = Data.UserOperations.Get(id);
+                result = Repository.Get(id);
             }
 
             return result;
@@ -156,29 +177,31 @@ namespace ApiMvc
         /// <summary>
         /// Creates new user and returns with it
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="context">current http context</param>
+        /// <returns>the created user</returns>
         private static object Create(HttpContext context)
         {
-            return Data.UserOperations.Create(Deserialize(context));
+            return Repository.Create(Deserialize(context));
         }
 
         /// <summary>
         /// Updates user and resturn with updated data
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
+        /// <param name="context">current http context</param>
+        /// <returns>the updated user</returns>
         private static object Update(HttpContext context)
         {
-            return Data.UserOperations.Update(GetIdFromRequest(context), Deserialize(context));
+            return Repository.Update(GetIdFromRequest(context), Deserialize(context));
         }
 
         /// <summary>
         /// Removes user and returns with removed user
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="context">current http context</param>
+        /// <returns>the deleted user</returns>
         private static object Delete(HttpContext context)
         {
-            return Data.UserOperations.Delete(new UserModel() { Id = GetIdFromRequest(context) });
+            return Repository.Delete(new UserModel() { Id = GetIdFromRequest(context) });
         }
     }
 }

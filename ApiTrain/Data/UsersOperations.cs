@@ -1,30 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Common.Model;
 using ServiceContracts;
 
 namespace Data
 {
-    public static class UserOperations
+    public interface IUserOperations
     {
-        private static ICrudRepository<Users> usersRepository;
+        IEnumerable<UserModel> List();
+        UserModel Get(Guid id);
+        UserModel Create(UserModel value);
+        UserModel Update(Guid id, UserModel value);
+        UserModel Delete(UserModel model);
+    }
+
+    /// <summary>
+    /// The instance which can be reached from services and it makes the mapping between model and viewmodel entities
+    /// </summary>
+    public class UserOperations : IUserOperations
+    {
+        /// <summary>
+        /// The repository instance
+        /// </summary>
+        private static ICrudRepository<Users> UsersRepository;
+        private static UserOperations instance_;
 
         private static ICrudRepository<Users> CrudRepository
         {
+            get { return UsersRepository ?? (UsersRepository = new UsersRepository()); }
+        }
+
+        private UserOperations()
+        {
+            
+        }
+
+        public static IUserOperations Instance
+        {
             get
             {
-                if (usersRepository == null)
-                {
-                    usersRepository = new UsersRepository();
-                }
-
-                return usersRepository;
+                return instance_ ?? (instance_ = new UserOperations());
             }
         }
 
-        public static IEnumerable<UserModel> List()
+        /// <summary>
+        /// Returns with list of users
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<UserModel> List()
         {
             return CrudRepository.List()
                                  .Select(value => new UserModel()
@@ -36,15 +60,25 @@ namespace Data
                                  });
         }
 
-        public static UserModel Get(Guid id)
+        /// <summary>
+        /// Gets a specified user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserModel Get(Guid id)
         {
             var data = CrudRepository.Get(id);
             return new UserModel() { Id = data.Id, Name = data.Name, UserName = data.UserName, IsAnonymous = data.IsAnonymous };
         }
 
-        public static UserModel Create(UserModel value)
+        /// <summary>
+        /// Creates user based on params
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public UserModel Create(UserModel value)
         {
-            var result = CrudRepository.Add(new Users()
+            var result = CrudRepository.Create(new Users()
             {
                 Id = Guid.NewGuid(),
                 Name = value.Name,
@@ -58,7 +92,13 @@ namespace Data
             return value;
         }
 
-        public static UserModel Update(Guid id, UserModel value)
+        /// <summary>
+        /// Updates user based on params
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public UserModel Update(Guid id, UserModel value)
         {
             var result = CrudRepository.Update(id, new Users()
             {
@@ -73,7 +113,12 @@ namespace Data
             return value;
         }
 
-        public static UserModel Delete(UserModel model)
+        /// <summary>
+        /// Deletes user based on params
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public UserModel Delete(UserModel model)
         {
             var result = CrudRepository.Delete(model.Id);
             model.Name = result.Name;

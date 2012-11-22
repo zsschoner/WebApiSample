@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace ApiMvc
@@ -11,9 +7,12 @@ namespace ApiMvc
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            // skips resources
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            // skips wcf services
             routes.IgnoreRoute("{resource}.svc/{*pathInfo}");
-            routes.IgnoreRoute("customapi/{*pathInfo}");
+            // Skips customapi routes
+            routes.IgnoreRoute(ServiceConstants.HttpHandlerRoot + "{*pathInfo}");
 
             // All request to user root wihtout parameter will be serviced with UserMvc.List() call
             routes.MapRoute(

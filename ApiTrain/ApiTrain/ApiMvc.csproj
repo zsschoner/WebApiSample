@@ -167,7 +167,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\Default1Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserMvcController.cs" />
@@ -177,14 +176,15 @@
     </Compile>
     <Compile Include="Models\ApiModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceConstants.cs" />
     <Compile Include="ServiceStack\AppHost.cs" />
     <Compile Include="ServiceStack\Interface\GetUserService.cs" />
     <Compile Include="ServiceStack\Interface\UserService.cs" />
     <Compile Include="ServiceStack\Model\UserOperations.cs" />
-    <Compile Include="WCF\ApiService.svc.cs">
-      <DependentUpon>ApiService.svc</DependentUpon>
+    <Compile Include="wcf.svc.cs">
+      <DependentUpon>wcf.svc</DependentUpon>
     </Compile>
-    <Compile Include="WCF\IApiService.cs" />
+    <Compile Include="IWcf.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -259,7 +259,7 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
-    <Content Include="WCF\ApiService.svc" />
+    <Content Include="wcf.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

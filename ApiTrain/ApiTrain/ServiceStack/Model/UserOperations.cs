@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ServiceStack.ServiceHost;
 using Common.Model;
 
-namespace ApiServiceStack.ServiceModel.ValuesOperations
+namespace ServiceStack.Model
 {
-    #region ValueModel request contract
+    #region User request contract
 
     [Route("api/user/{id}", "GET")]
     public class GetUserViewModel
