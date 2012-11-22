@@ -23,7 +23,7 @@ namespace ApiMvc.Controllers
         public  UserMvcController()
         {
             // Only for sample, it can be injected into the constructor
-            repository_ = Data.UserOperations.Instance;
+            repository_ = Data.UserOperations.OperationFactory;
         }
 
         /// <summary>

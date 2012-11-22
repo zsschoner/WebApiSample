@@ -21,7 +21,7 @@ namespace ApiMvc
 
         public CustomApi()
         {
-            Repository = Data.UserOperations.Instance;
+            Repository = Data.UserOperations.OperationFactory;
         }
 
         public bool IsReusable

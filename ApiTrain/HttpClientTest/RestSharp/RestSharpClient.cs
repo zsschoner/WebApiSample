@@ -35,36 +35,40 @@ namespace HttpClientTest
             return id;
         }
 
-        private static IRestRequest CreateRequest(Method method)
+        private static IRestRequest CreateRequest(Method method, string format)
         {
             var result = new RestRequest
                              {
                                  Method = method,
-                                 JsonSerializer = new JsonSerializer { ContentType = "application/json" }
+                                 JsonSerializer = new JsonSerializer { ContentType = "application/json; charset=utf-8" },
+                                 XmlSerializer = new XmlSerializer() { ContentType = "application/xml; charset=utf-8" }
                              };
-            result.AddHeader("Content-Type", "application/json");
-            result.AddHeader("Accept", "application/json");
-            result.RequestFormat = DataFormat.Json;
+
+            result.AddHeader("Content-Type", String.Format("application/{0}; charset=utf-8", format));
+            result.AddHeader("Accept", String.Format("application/{0}; charset=utf-8", format));
+            result.RequestFormat = format == "json" ? DataFormat.Json : DataFormat.Xml;
 
             return result;
         }
 
-        public static void GetList()
+        public static void GetList(string format)
         {
-            var c = new RestClient(baseUrl);
-            var resp = c.Get(CreateRequest(Method.GET));
+            var c = new RestClient(String.Format("{0}?format={1}", baseUrl, format));
+            var resp = c.Get(CreateRequest(Method.GET, format));
             if (!Models.Any()) WriteResult("GET LIST", resp);
 
             Models.Clear();
-            
-            if(string.IsNullOrEmpty(resp.Content))
+
+            if (string.IsNullOrEmpty(resp.Content))
             {
                 return;
             }
+
+            var ds = format == "json" ? new JsonDeserializer() as IDeserializer : new XmlDeserializer() as IDeserializer;
             
-            var ds = new JsonDeserializer();
+            if (format != "json") resp.Content = resp.Content.Substring(1);
             var obj = ds.Deserialize<List<UserModel>>(resp);
-            
+
             if (obj != null)
             {
                 Models.AddRange(obj);
@@ -79,38 +83,37 @@ namespace HttpClientTest
             Console.WriteLine("=================");
         }
 
-        public static void Get()
+        public static void Get(string format)
         {
             var id = GetSelectedId();
 
             if (id != Guid.Empty)
             {
-                var c = new RestClient(String.Format("{0}/{1}", baseUrl, id));
+                var c = new RestClient(String.Format("{0}/{1}?format={2}", baseUrl, id, format));
                 List<UserModel> res = Enumerable.Empty<UserModel>().ToList();
-                c.GetAsync<List<UserModel>>(CreateRequest(RestSharp.Method.GET), (resp, result) =>
+                c.GetAsync<List<UserModel>>(CreateRequest(RestSharp.Method.GET, format), (resp, result) =>
                 {
-                    //var ds = new JsonDeserializer();
                     res = resp.Data;
                     WriteResult("GET", resp);
                 });
             }
         }
 
-        public static void Post()
+        public static void Post(string format)
         {
             var c = new RestClient(baseUrl);
-            List<UserModel> res = Enumerable.Empty<UserModel>().ToList();
-            var model = new UserModel()
+            
+            var model = new UserResource()
                             {
                                 UserName = "User - " + Guid.NewGuid().ToString(),
                                 Name = "RestClient user",
                                 IsAnonymous = false
                             };
 
-            c.PostAsync<UserModel>(CreateRequest(Method.POST).AddBody(model), (resp, result) => WriteResult("POST", resp));
+            c.PostAsync<UserResource>(CreateRequest(Method.POST, "json").AddBody(model), (resp, result) => WriteResult("POST", resp));
         }
 
-        public static void Put()
+        public static void Put(string format)
         {
             var id = GetSelectedId();
 
@@ -120,11 +123,11 @@ namespace HttpClientTest
                 var model = Models.First(user => user.Id == id);
                 model.Name = "RestClient user updated";
 
-                c.PutAsync<UserModel>(CreateRequest(Method.PUT).AddBody(model), (resp, result) => WriteResult("PUT", resp));
+                c.PutAsync<UserModel>(CreateRequest(Method.PUT, "json").AddBody(model), (resp, result) => WriteResult("PUT", resp));
             }
         }
 
-        public static void Delete()
+        public static void Delete(string format)
         {
             var id = GetSelectedId();
 
@@ -132,7 +135,7 @@ namespace HttpClientTest
             {
                 var c = new RestClient(String.Format("{0}/{1}", baseUrl, id));
 
-                c.DeleteAsync<UserModel>(CreateRequest(Method.DELETE), (resp, result) => WriteResult("DELETE", resp));
+                c.DeleteAsync<UserResource>(CreateRequest(Method.DELETE, format), (resp, result) => WriteResult("DELETE", resp));
             }
         }
     }

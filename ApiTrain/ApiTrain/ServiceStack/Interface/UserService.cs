@@ -1,7 +1,7 @@
-﻿using System;
-using ServiceStack.Model;
-using Data;
+﻿using Data;
+using System.Linq;
 using ServiceStack.ServiceHost;
+using ServiceStackSample.Model;
 
 namespace ServiceStack.Interface
 {
@@ -11,12 +11,12 @@ namespace ServiceStack.Interface
 
         public UsersRestService()
         {
-            repository_ = Data.UserOperations.Instance;
+            repository_ = Data.UserOperations.OperationFactory;
         }
 
         public object Get(UserListResource request)
         {
-            return repository_.List();
+            return repository_.List().ToList();
         }
 
     }

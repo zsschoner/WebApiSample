@@ -22,7 +22,7 @@ namespace HttpClientTest
             {
                 var result = client.GetAsync(baseAddress);
                 result.Result.EnsureSuccessStatusCode();
-                var resultString = result.Result.Content.ReadAsString();
+                var resultString = result.Result.Content.ReadAsStringAsync().Result;
 
                 var resultObj = ServiceStack.Text.Json.JsonReader<IEnumerable<UserModel>>.Parse(resultString) as IEnumerable<UserModel>;
                 if (resultObj != null) models.AddRange(resultObj);
@@ -43,7 +43,7 @@ namespace HttpClientTest
                     var result = client.GetAsync(String.Format("{0}{1}", baseAddress, id));
 
                     result.Result.EnsureSuccessStatusCode();
-                    var resultString = result.Result.Content.ReadAsString();
+                    var resultString = result.Result.Content.ReadAsStringAsync().Result;
                     var resultObj = ServiceStack.Text.Json.JsonReader<IEnumerable<UserModel>>.Parse(resultString) as IEnumerable<UserModel>;
                     Console.WriteLine(resultString);
                 }
@@ -90,7 +90,7 @@ namespace HttpClientTest
                 var result = client.PostAsync(baseAddress, content);
 
                 result.Result.EnsureSuccessStatusCode();
-                var resultString = result.Result.Content.ReadAsString();
+                var resultString = result.Result.Content.ReadAsStringAsync().Result;
                 var resultObj = ServiceStack.Text.Json.JsonReader<IEnumerable<UserModel>>.Parse(resultString) as IEnumerable<UserModel>;
                 Console.WriteLine(resultString);
             }
@@ -115,7 +115,7 @@ namespace HttpClientTest
                     var result = client.PutAsync(String.Format("{0}/{1}", baseAddress, id), content);
 
                     result.Result.EnsureSuccessStatusCode();
-                    var resultString = result.Result.Content.ReadAsString();
+                    var resultString = result.Result.Content.ReadAsStringAsync().Result;
                     var resultObj = ServiceStack.Text.Json.JsonReader<IEnumerable<UserModel>>.Parse(resultString) as IEnumerable<UserModel>;
                     Console.WriteLine(resultString);
                 }
@@ -141,7 +141,7 @@ namespace HttpClientTest
                     var result = client.DeleteAsync(String.Format("{0}/{1}", baseAddress, id));
 
                     result.Result.EnsureSuccessStatusCode();
-                    var resultString = result.Result.Content.ReadAsString();
+                    var resultString = result.Result.Content.ReadAsStringAsync().Result;
                     var resultObj = ServiceStack.Text.Json.JsonReader<IEnumerable<UserModel>>.Parse(resultString) as IEnumerable<UserModel>;
                     Console.WriteLine(resultString);
                 }

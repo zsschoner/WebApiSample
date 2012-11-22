@@ -19,7 +19,7 @@ namespace ApiMvc.Controllers
 
         public UserController()
         {
-            repository_ = Data.UserOperations.Instance;
+            repository_ = Data.UserOperations.OperationFactory;
         }
 
         // GET api/user

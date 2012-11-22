@@ -17,7 +17,7 @@ namespace WCF
         
         public Wcf()
         {
-            repository_ = Data.UserOperations.Instance;
+            repository_ = Data.UserOperations.OperationFactory;
         }
 
         /// <summary>

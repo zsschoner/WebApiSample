@@ -1,8 +1,9 @@
 ﻿using System;
 using ServiceStack.ServiceHost;
 using Common.Model;
+using System.Runtime.Serialization;
 
-namespace ServiceStack.Model
+namespace ServiceStackSample.Model
 {
     #region User request contract
 
@@ -28,7 +29,7 @@ namespace ServiceStack.Model
     [Route("api/user", "PUT")]
     [Route("api/user/{id}", "DELETE")]
     [Route("api/user/{id}/{UserName}/{Name}/{IsAnonymous}", "PUT")]
-    public class UserResouce : UserModel { }
+    public class UserResource : UserModel { }
 
     #endregion
 }

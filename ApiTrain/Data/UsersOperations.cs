@@ -23,27 +23,25 @@ namespace Data
         /// <summary>
         /// The repository instance
         /// </summary>
-        private static ICrudRepository<Users> UsersRepository;
-        private static UserOperations instance;
-
+        
         private static ICrudRepository<Users> CrudRepository
         {
-            get { return UsersRepository ?? (UsersRepository = new UsersRepository()); }
+            get { return new UsersRepository(); }
         }
 
         private UserOperations()
         {
-            
+
         }
 
         /// <summary>
         /// Just for the simple usage
         /// </summary>
-        public static IUserOperations Instance
+        public static IUserOperations OperationFactory
         {
             get
             {
-                return instance ?? (instance = new UserOperations());
+                return new UserOperations();
             }
         }
 

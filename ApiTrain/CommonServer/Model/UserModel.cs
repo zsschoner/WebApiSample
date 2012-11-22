@@ -8,9 +8,11 @@ using ServiceStack.ServiceHost;
 namespace Common.Model
 {
     // User model for service operations
+    [DataContract]
     public class UserModel
     {
         // Id of the user
+        [DataMember]
         public Guid Id { get; set; }
         // For user information display
         public string DisplayName
@@ -21,10 +23,13 @@ namespace Common.Model
             }
         }
         // UserName for login
+        [DataMember]
         public string UserName { get; set; }
         // Fullname of the user
+        [DataMember]
         public string Name { get; set; }
         // User has any permission or not
+        [DataMember]
         public bool IsAnonymous { get; set; }
     }
 }
