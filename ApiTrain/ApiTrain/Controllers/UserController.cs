@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Linq;
+using System.Web.Http.Filters;
 
 namespace ApiMvc.Controllers
 {
@@ -147,6 +148,19 @@ namespace ApiMvc.Controllers
                 // Send the error message to the client
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
             }
+        }
+    }
+
+    public class AmbiguousExceptionFilter : ExceptionFilterAttribute
+    {
+        public override void OnException(HttpActionExecutedContext actionExecutedContext)
+        {
+            var resp = actionExecutedContext.ActionContext.Response;
+
+            resp.StatusCode = HttpStatusCode.Ambiguous;
+            resp.Content = new StringContent("Ambiguous call");
+            
+            base.OnException(actionExecutedContext);
         }
     }
 }

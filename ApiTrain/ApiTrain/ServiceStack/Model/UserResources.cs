@@ -1,7 +1,5 @@
-﻿using System;
-using ServiceStack.ServiceHost;
+﻿using ServiceStack.ServiceHost;
 using Common.Model;
-using System.Runtime.Serialization;
 
 namespace ServiceStackSample.Model
 {

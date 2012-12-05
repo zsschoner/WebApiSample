@@ -29,7 +29,6 @@ namespace ApiMvc
             {
                 cfg.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
             }
-            
         }
     }
 }
