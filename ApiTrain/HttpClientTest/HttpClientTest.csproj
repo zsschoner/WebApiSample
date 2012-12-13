@@ -79,7 +79,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestSharp\RestSharpClient.cs" />
-    <Compile Include="Spring\SpringClient.cs" />
     <Compile Include="UserResource.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,14 +18,14 @@ namespace ApiMvc
             routes.MapRoute(
                 name: "Root",
                 url: "user",
-                defaults: new { controller = "UserMvc", action = "List" }
+                defaults: new { controller = "Mvc", action = "List" }
             );
             
             // All request to user root with a parameter will be serviced with an Index call
             routes.MapRoute(
                 name: "IdCommand",
                 url: "user/{id}",
-                defaults: new { controller = "UserMvc", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Mvc", action = "Index", id = UrlParameter.Optional }
             );
 
             // Default

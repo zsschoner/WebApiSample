@@ -23,27 +23,7 @@ namespace ApiMvc.Controllers
             repository_ = Data.UserOperations.OperationFactory;
         }
 
-        // GET api/user
-        // Gets the list of users
-        // Result will be sent based on Accept header.
-        // If Accept header is in chrome like default: Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-        // the result will sent in xml, but if the client set Accept: application/json header the result will be sent
-        // in JSON format
-        // With the Queryable attribute that comes from Asp.Net OData extension you can use basic OData filters like
-        // $top=1 or $orderby=Name desc etc.
-        [Queryable]
-        public IQueryable<UserModel> Get()
-        {
-            try
-            {
-                return repository_.List().AsQueryable();
-            }
-            catch (Exception ex)
-            {
-                // Send the error message to the client
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
-            }
-        }
+        
 
         /// <summary>
         /// Gets a user specified by id
@@ -63,6 +43,28 @@ namespace ApiMvc.Controllers
                 // Send the error message to the client
                 emsg.ReasonPhrase = ex.Message;
                 throw new HttpResponseException(emsg);
+            }
+        }
+
+        // GET api/user
+        // Gets the list of users
+        // Result will be sent based on Accept header.
+        // If Accept header is in chrome like default: Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        // the result will sent in xml, but if the client set Accept: application/json header the result will be sent
+        // in JSON format
+        // With the Queryable attribute that comes from Asp.Net OData extension you can use basic OData filters like
+        // $top=1 or $orderby=Name desc etc.
+        [Queryable]
+        public IQueryable<UserModel> Get()
+        {
+            try
+            {
+                return repository_.List().AsQueryable();
+            }
+            catch (Exception ex)
+            {
+                // Send the error message to the client
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex));
             }
         }
 
